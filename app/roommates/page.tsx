@@ -1,0 +1,148 @@
+'use client'
+import { useState } from 'react'
+import { Search, Filter, MapPin, Briefcase, Music, Coffee, Users } from 'lucide-react'
+
+import { Input } from "@/components/ui/input"
+import { Button } from "@/components/ui/button"
+import { Slider } from "@/components/ui/slider"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Card, CardContent, CardFooter } from "@/components/ui/card"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Badge } from "@/components/ui/badge"
+
+export default function RoommateFinder() {
+  const [ageRange, setAgeRange] = useState([18, 50])
+
+  return (
+    <div className="container mx-auto px-4 py-8">
+      <h1 className="text-3xl font-bold mb-6">Find Your Perfect Roommate</h1>
+      
+      <div className="mb-6 flex flex-col sm:flex-row gap-4">
+        <div className="relative flex-grow">
+          <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
+          <Input placeholder="Search for roommates..." className="pl-8" />
+        </div>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="outline" className="w-full sm:w-auto">
+              <Filter className="mr-2 h-4 w-4" />
+              Filters
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent className="w-80">
+            <DropdownMenuLabel>Filter Options</DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            <div className="p-4 space-y-4">
+              <div className="space-y-2">
+                <label className="text-sm font-medium">Age Range</label>
+                <Slider
+                  min={18}
+                  max={80}
+                  step={1}
+                  value={ageRange}
+                  onValueChange={setAgeRange}
+                />
+                <div className="flex justify-between text-sm text-muted-foreground">
+                  <span>{ageRange[0]} years</span>
+                  <span>{ageRange[1]} years</span>
+                </div>
+              </div>
+              <div className="space-y-2">
+                <label htmlFor="location" className="text-sm font-medium">Location</label>
+                <Select>
+                  <SelectTrigger id="location">
+                    <SelectValue placeholder="Select location" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="mumbai">Mumbai</SelectItem>
+                    <SelectItem value="delhi">Delhi</SelectItem>
+                    <SelectItem value="bangalore">Bangalore</SelectItem>
+                    <SelectItem value="chennai">Chennai</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="space-y-2">
+                <label htmlFor="gender" className="text-sm font-medium">Gender</label>
+                <Select>
+                  <SelectTrigger id="gender">
+                    <SelectValue placeholder="Select gender" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="male">Male</SelectItem>
+                    <SelectItem value="female">Female</SelectItem>
+                    <SelectItem value="other">Other</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="space-y-2">
+                <label htmlFor="occupation" className="text-sm font-medium">Occupation</label>
+                <Select>
+                  <SelectTrigger id="occupation">
+                    <SelectValue placeholder="Select occupation" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="student">Student</SelectItem>
+                    <SelectItem value="professional">Professional</SelectItem>
+                    <SelectItem value="other">Other</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <Button className="w-full mt-4">Apply Filters</Button>
+            </div>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </div>
+
+      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        {[...Array(8)].map((_, i) => (
+          <Card key={i} className="overflow-hidden">
+            <CardContent className="p-4">
+              <div className="flex items-center space-x-4 mb-4">
+                <Avatar className="h-12 w-12">
+                  <AvatarImage src={`/placeholder.svg?text=${String.fromCharCode(65 + i)}`} />
+                  <AvatarFallback>{String.fromCharCode(65 + i)}</AvatarFallback>
+                </Avatar>
+                <div>
+                  <h3 className="font-semibold text-lg">John Doe {i + 1}</h3>
+                  <p className="text-sm text-muted-foreground">Age: {25 + i}</p>
+                </div>
+              </div>
+              <div className="space-y-2 text-sm">
+                <div className="flex items-center">
+                  <MapPin className="h-4 w-4 mr-2 text-muted-foreground" />
+                  <span>Mumbai, India</span>
+                </div>
+                <div className="flex items-center">
+                  <Briefcase className="h-4 w-4 mr-2 text-muted-foreground" />
+                  <span>{['Student', 'Professional', 'Freelancer'][i % 3]}</span>
+                </div>
+                <div className="flex flex-wrap gap-2 mt-2">
+                  <Badge variant="secondary">Non-smoker</Badge>
+                  <Badge variant="secondary">Early bird</Badge>
+                  <Badge variant="secondary">Pet-friendly</Badge>
+                </div>
+              </div>
+            </CardContent>
+            <CardFooter className="p-4 pt-0 flex justify-between">
+              <Button variant="outline" size="sm">
+                <Users className="h-4 w-4 mr-2" />
+                View Profile
+              </Button>
+              <Button size="sm">
+                <Coffee className="h-4 w-4 mr-2" />
+                Connect
+              </Button>
+            </CardFooter>
+          </Card>
+        ))}
+      </div>
+    </div>
+  )
+}

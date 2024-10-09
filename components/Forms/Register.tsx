@@ -28,7 +28,7 @@ import Link from "next/link";
 import axios from "axios";
 
 import { useRouter } from "next/navigation";
-// import UserContext from "@/providers/UserProvider";
+import UserContext from "@/providers/UserProvider";
 import { useToast } from "@/hooks/use-toast";
 
 const formSchema = z.object({
@@ -43,10 +43,20 @@ const formSchema = z.object({
   }),
 });
 
+type values = {
+  username: string;
+  email: string;
+  password: string;
+}
+
 export default function Register() {
   const { toast } = useToast();
   const router = useRouter();
-  // const { setUser } = useContext(UserContext);
+  const userContent = useContext(UserContext);
+
+  if (!userContent) {
+    return
+  }
 
   const form = useForm({
     resolver: zodResolver(formSchema),
@@ -57,15 +67,15 @@ export default function Register() {
     },
   });
 
-  async function onSubmit(values) {
+  async function onSubmit(values: values) {
     try {
-      const response = await axios.post("/api/register", values);
+      const response = await axios.post("/api/signup", values);
       console.log(response);
       if (response.status === 200) {
         toast({
           description: response.data.message,
         });
-        setUser(response.data.user);
+        userContent?.setUser(response.data.user);
         setTimeout(() => {
           router.push("/");
         }, 2000);

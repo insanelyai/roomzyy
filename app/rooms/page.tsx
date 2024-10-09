@@ -1,22 +1,29 @@
-'use client'
-import { useState } from 'react'
-import { Search, MapPin, IndianRupee, Users, Home, Filter } from 'lucide-react'
+"use client";
+import { useState } from "react";
+import { Search, MapPin, IndianRupee, Users, Home, Filter } from "lucide-react";
 
-import { Input } from "@/components/ui/input"
-import { Button } from "@/components/ui/button"
-import { Slider } from "@/components/ui/slider"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Card, CardContent, CardFooter } from "@/components/ui/card"
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Slider } from "@/components/ui/slider";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+} from "@/components/ui/dropdown-menu";
+import BookNow from "@/components/Composite/BookNow"
 
 export default function Component() {
-  const [priceRange, setPriceRange] = useState([0, 10000])
+  const [priceRange, setPriceRange] = useState([0, 10000]);
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -51,7 +58,9 @@ export default function Component() {
                 </div>
               </div>
               <div className="space-y-2">
-                <label htmlFor="place" className="text-sm font-medium">Place</label>
+                <label htmlFor="place" className="text-sm font-medium">
+                  Place
+                </label>
                 <Select>
                   <SelectTrigger id="place">
                     <SelectValue placeholder="Select a place" />
@@ -65,7 +74,9 @@ export default function Component() {
                 </Select>
               </div>
               <div className="space-y-2">
-                <label htmlFor="gender" className="text-sm font-medium">Gender</label>
+                <label htmlFor="gender" className="text-sm font-medium">
+                  Gender
+                </label>
                 <Select>
                   <SelectTrigger id="gender">
                     <SelectValue placeholder="Select gender" />
@@ -78,7 +89,9 @@ export default function Component() {
                 </Select>
               </div>
               <div className="space-y-2">
-                <label htmlFor="rooms" className="text-sm font-medium">Number of Rooms</label>
+                <label htmlFor="rooms" className="text-sm font-medium">
+                  Number of Rooms
+                </label>
                 <Select>
                   <SelectTrigger id="rooms">
                     <SelectValue placeholder="Select rooms" />
@@ -120,11 +133,11 @@ export default function Component() {
                 </div>
                 <div className="flex items-center">
                   <IndianRupee className="h-4 w-4 mr-2 text-muted-foreground" />
-                  <span>₹{1000 + i * 100} per night</span>
+                  <span>₹{1000 + i * 100} Per month</span>
                 </div>
                 <div className="flex items-center">
                   <Users className="h-4 w-4 mr-2 text-muted-foreground" />
-                  <span>{['Male', 'Female', 'Mixed'][i % 3]}</span>
+                  <span>{["Male", "Female", "Mixed"][i % 3]}</span>
                 </div>
                 <div className="flex items-center">
                   <Home className="h-4 w-4 mr-2 text-muted-foreground" />
@@ -133,12 +146,13 @@ export default function Component() {
               </div>
             </CardContent>
             <CardFooter className="p-4 pt-0">
-              
-              <Button className="w-full">Book Now</Button>
+            <Button>
+          Book Now
+        </Button>
             </CardFooter>
           </Card>
         ))}
       </div>
     </div>
-  )
+  );
 }

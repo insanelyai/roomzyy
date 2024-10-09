@@ -133,6 +133,7 @@ export default function Component() {
               </div>
             </CardContent>
             <CardFooter className="p-4 pt-0">
+              
               <Button className="w-full">Book Now</Button>
             </CardFooter>
           </Card>

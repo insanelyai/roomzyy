@@ -4,6 +4,7 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Star } from 'lucide-react'
+import { Button } from '@/components/ui/button'
 
 export default function RoomInfoPage() {
   const [mainImage, setMainImage] = useState("/placeholder.svg?height=400&width=600")
@@ -92,6 +93,7 @@ export default function RoomInfoPage() {
                   </ul>
                 </div>
               </div>
+              <Button className="mt-5 bg-blue-600 h-12 w-full" size={'lg'}>I'm Interested</Button>
             </CardContent>
           </Card>
         </div>

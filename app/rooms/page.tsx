@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Search, MapPin, IndianRupee, Users, Home, Filter } from "lucide-react";
 
 import { Input } from "@/components/ui/input";
@@ -20,10 +20,33 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import BookNow from "@/components/Composite/BookNow"
+import BookNow from "@/components/Composite/BookNow";
+import axios from "axios";
+import Link from "next/link";
+import { ConfettiButton } from "@/components/ui/confetti";
 
-export default function Component() {
+export default function page() {
+  const [properties, setProperties] = useState([]);
   const [priceRange, setPriceRange] = useState([0, 10000]);
+
+  useEffect(() => {
+    async function fetch() {
+      await axios
+        .get("/api/property/fetch-all")
+        .then((response) => {
+          console.log(response);
+          setProperties(response.data);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    }
+    fetch();
+  }, []);
+
+  useEffect(() => {
+    console.log(properties);
+  }, [properties]);
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -111,13 +134,13 @@ export default function Component() {
       </div>
 
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-        {[...Array(8)].map((_, i) => (
+        {properties.map((property, i) => (
           <Card key={i} className="overflow-hidden">
             <img
               alt={`Room ${i + 1}`}
               className="w-full h-48 object-cover"
               height="200"
-              src="/placeholder.svg"
+              src={property && property.propertyImages[0]}
               style={{
                 aspectRatio: "300/200",
                 objectFit: "cover",
@@ -125,30 +148,32 @@ export default function Component() {
               width="300"
             />
             <CardContent className="p-4">
-              <h3 className="font-semibold text-lg mb-2">Room {i + 1}</h3>
+              <h3 className="font-semibold text-lg mb-2">
+                {property && property.name}
+              </h3>
               <div className="space-y-2 text-sm">
                 <div className="flex items-center">
                   <MapPin className="h-4 w-4 mr-2 text-muted-foreground" />
-                  <span>Mumbai, India</span>
+                  <span>{property && property.address}</span>
                 </div>
                 <div className="flex items-center">
                   <IndianRupee className="h-4 w-4 mr-2 text-muted-foreground" />
-                  <span>₹{1000 + i * 100} Per month</span>
+                  <span>₹{property && property.rent} Per month</span>
                 </div>
                 <div className="flex items-center">
                   <Users className="h-4 w-4 mr-2 text-muted-foreground" />
-                  <span>{["Male", "Female", "Mixed"][i % 3]}</span>
+                  <span>{property.gender}</span>
                 </div>
                 <div className="flex items-center">
                   <Home className="h-4 w-4 mr-2 text-muted-foreground" />
-                  <span>{1 + (i % 3)} rooms</span>
+                  <span>{property.noOfRooms}</span>
                 </div>
               </div>
             </CardContent>
             <CardFooter className="p-4 pt-0">
-            <Button>
-          Book Now
-        </Button>
+              <Link href={'/property/props'}>
+              <ConfettiButton>Book Now</ConfettiButton>
+              </Link>
             </CardFooter>
           </Card>
         ))}

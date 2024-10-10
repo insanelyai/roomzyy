@@ -1,29 +1,150 @@
-'use client'
-import { useState } from 'react'
-import { Search, Filter, MapPin, Briefcase, Music, Coffee, Users } from 'lucide-react'
+"use client";
+import { useState } from "react";
+import {
+  Search,
+  Filter,
+  MapPin,
+  Briefcase,
+  Music,
+  Coffee,
+  Users,
+} from "lucide-react";
 
-import { Input } from "@/components/ui/input"
-import { Button } from "@/components/ui/button"
-import { Slider } from "@/components/ui/slider"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Card, CardContent, CardFooter } from "@/components/ui/card"
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Slider } from "@/components/ui/slider";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Badge } from "@/components/ui/badge"
+} from "@/components/ui/dropdown-menu";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
+
+const profiles = [
+  {
+    id: 1,
+    name: "Amit Sharma",
+    age: 25,
+    location: "Mumbai, India",
+    profession: "Student",
+    preferences: {
+      smoking: "Non-smoker",
+      lifestyle: "Early bird",
+      pets: "Pet-friendly",
+    },
+    image: "/assests/b1"
+  },
+  {
+    id: 2,
+    name: "Priya Desai",
+    age: 26,
+    location: "Mumbai, India",
+    profession: "Professional",
+    preferences: {
+      smoking: "Non-smoker",
+      lifestyle: "Early bird",
+      pets: "Pet-friendly",
+    },
+    image: "/assests/g1.jpeg"
+  },
+  {
+    id: 3,
+    name: "Rahul Verma",
+    age: 27,
+    location: "Mumbai, India",
+    profession: "Freelancer",
+    preferences: {
+      smoking: "Non-smoker",
+      lifestyle: "Early bird",
+      pets: "Pet-friendly",
+    },
+    image: "/assests/b2.jpeg"
+  },
+  {
+    id: 4,
+    name: "Sneha Patil",
+    age: 28,
+    location: "Mumbai, India",
+    profession: "Student",
+    preferences: {
+      smoking: "Non-smoker",
+      lifestyle: "Early bird",
+      pets: "Pet-friendly",
+    },
+    image: "/assests/g2.jpeg"
+  },
+  {
+    id: 5,
+    name: "Vikram Rao",
+    age: 29,
+    location: "Mumbai, India",
+    profession: "Professional",
+    preferences: {
+      smoking: "Non-smoker",
+      lifestyle: "Early bird",
+      pets: "Pet-friendly",
+    },
+    image: "/assests/b3..jpeg"
+  },
+  {
+    id: 6,
+    name: "Anita Mehta",
+    age: 30,
+    location: "Mumbai, India",
+    profession: "Freelancer",
+    preferences: {
+      smoking: "Non-smoker",
+      lifestyle: "Early bird",
+      pets: "Pet-friendly",
+    },
+    image: "/assests/g3.jpeg"
+  },
+  {
+    id: 7,
+    name: "Rohan Iyer",
+    age: 31,
+    location: "Mumbai, India",
+    profession: "Student",
+    preferences: {
+      smoking: "Non-smoker",
+      lifestyle: "Early bird",
+      pets: "Pet-friendly",
+    },
+    image: "/assests/b4.jpeg"
+  },
+  {
+    id: 8,
+    name: "Kavita Singh",
+    age: 32,
+    location: "Mumbai, India",
+    profession: "Professional",
+    preferences: {
+      smoking: "Non-smoker",
+      lifestyle: "Early bird",
+      pets: "Pet-friendly",
+    },
+    image: "/assests/g4.jpg"
+  },
+];
 
 export default function RoommateFinder() {
-  const [ageRange, setAgeRange] = useState([18, 50])
+  const [ageRange, setAgeRange] = useState([18, 50]);
 
   return (
     <div className="container mx-auto px-4 py-8">
       <h1 className="text-3xl font-bold mb-6">Find Your Perfect Roommate</h1>
-      
+
       <div className="mb-6 flex flex-col sm:flex-row gap-4">
         <div className="relative flex-grow">
           <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
@@ -55,7 +176,9 @@ export default function RoommateFinder() {
                 </div>
               </div>
               <div className="space-y-2">
-                <label htmlFor="location" className="text-sm font-medium">Location</label>
+                <label htmlFor="location" className="text-sm font-medium">
+                  Location
+                </label>
                 <Select>
                   <SelectTrigger id="location">
                     <SelectValue placeholder="Select location" />
@@ -69,7 +192,9 @@ export default function RoommateFinder() {
                 </Select>
               </div>
               <div className="space-y-2">
-                <label htmlFor="gender" className="text-sm font-medium">Gender</label>
+                <label htmlFor="gender" className="text-sm font-medium">
+                  Gender
+                </label>
                 <Select>
                   <SelectTrigger id="gender">
                     <SelectValue placeholder="Select gender" />
@@ -82,7 +207,9 @@ export default function RoommateFinder() {
                 </Select>
               </div>
               <div className="space-y-2">
-                <label htmlFor="occupation" className="text-sm font-medium">Occupation</label>
+                <label htmlFor="occupation" className="text-sm font-medium">
+                  Occupation
+                </label>
                 <Select>
                   <SelectTrigger id="occupation">
                     <SelectValue placeholder="Select occupation" />
@@ -101,32 +228,40 @@ export default function RoommateFinder() {
       </div>
 
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-        {[...Array(8)].map((_, i) => (
-          <Card key={i} className="overflow-hidden">
+        {profiles.map((profile, i) => (
+          <Card key={profile.id} className="overflow-hidden">
             <CardContent className="p-4">
               <div className="flex items-center space-x-4 mb-4">
                 <Avatar className="h-12 w-12">
-                  <AvatarImage src={`/placeholder.svg?text=${String.fromCharCode(65 + i)}`} />
-                  <AvatarFallback>{String.fromCharCode(65 + i)}</AvatarFallback>
+                  <AvatarImage
+                    src={profile.image}
+                  />
+                  <AvatarFallback>{profile.name.charAt(0)}</AvatarFallback>
                 </Avatar>
                 <div>
-                  <h3 className="font-semibold text-lg">John Doe {i + 1}</h3>
-                  <p className="text-sm text-muted-foreground">Age: {25 + i}</p>
+                  <h3 className="font-semibold text-lg">{profile.name}</h3>
+                  <p className="text-sm text-muted-foreground">
+                    Age: {profile.age}
+                  </p>
                 </div>
               </div>
               <div className="space-y-2 text-sm">
                 <div className="flex items-center">
                   <MapPin className="h-4 w-4 mr-2 text-muted-foreground" />
-                  <span>Mumbai, India</span>
+                  <span>{profile.location}</span>
                 </div>
                 <div className="flex items-center">
                   <Briefcase className="h-4 w-4 mr-2 text-muted-foreground" />
-                  <span>{['Student', 'Professional', 'Freelancer'][i % 3]}</span>
+                  <span>{profile.profession}</span>
                 </div>
                 <div className="flex flex-wrap gap-2 mt-2">
-                  <Badge variant="secondary">Non-smoker</Badge>
-                  <Badge variant="secondary">Early bird</Badge>
-                  <Badge variant="secondary">Pet-friendly</Badge>
+                  <Badge variant="secondary">
+                    {profile.preferences.smoking}
+                  </Badge>
+                  <Badge variant="secondary">
+                    {profile.preferences.lifestyle}
+                  </Badge>
+                  <Badge variant="secondary">{profile.preferences.pets}</Badge>
                 </div>
               </div>
             </CardContent>
@@ -144,5 +279,5 @@ export default function RoommateFinder() {
         ))}
       </div>
     </div>
-  )
+  );
 }

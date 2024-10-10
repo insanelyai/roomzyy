@@ -6,14 +6,38 @@ import { ScrollArea } from "@/components/ui/scroll-area"
 import { Star } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import BookNow from '@/components/Composite/BookNow'
+import Link from 'next/link'
+
+const profiles = [
+  {
+    "name": "Rajesh Kumar",
+    "image": "/assets/b1.jpg",
+    "description": "Rajesh is a passionate software engineer with a love for coding and problem-solving. He enjoys spending his weekends playing cricket with friends and traveling to new places."
+  },
+  {
+    "name": "Sonal Mehta",
+    "image": "/assets/g2.jpg",
+    "description": "Sonal is a creative marketing manager who loves to read and practice yoga. In her free time, she explores her city through the lens of her camera."
+  },
+  {
+    "name": "Arjun Patel",
+    "image": "/assets/b3.jpg",
+    "description": "Arjun is an entrepreneur with a keen interest in business strategy. He loves cooking and cycling in his free time and is always up for a new challenge."
+  },
+  {
+    "name": "Nisha Singh",
+    "image": "/assets/g4.jpg",
+    "description": "Nisha is a talented graphic designer with a flair for creativity. She enjoys drawing, listening to music, and constantly honing her design skills."
+  },
+]
 
 export default function RoomInfoPage() {
-  const [mainImage, setMainImage] = useState("/placeholder.svg?height=400&width=600")
+  const [mainImage, setMainImage] = useState("/assets/rooms/4.jpg")
   const smallImages = [
-    "/placeholder.svg",
-    "/placeholder.svg",
-    "/placeholder.svg",
-    "/placeholder.svg"
+    "/assets/rooms/1.jpg",
+    "/assets/rooms/2.jpg",
+    "/assets/rooms/3.jpg",
+    "/assets/rooms/4.jpg",
   ]
 
   const rating = 4.5
@@ -70,14 +94,13 @@ export default function RoomInfoPage() {
                 <div>
                   <h3 className="text-2xl font-semibold mb-3">Location</h3>
                   <p className="text-gray-600 mb-4">
-                    123 Paradise Street, Beachfront City<br />
-                    Tropical Island, 12345
+                    123, Pristin Tower, Bandra West
                   </p>
                 </div>
                 <div>
                   <h3 className="text-2xl font-semibold mb-3">Price</h3>
                   <p className="text-gray-600 mb-4">
-                    $500 per night
+                  ₹50000
                   </p>
                 </div>
                 <div>
@@ -94,7 +117,9 @@ export default function RoomInfoPage() {
                   </ul>
                 </div>
               </div>
-             <BookNow />
+              <Link href={'/payment'}>
+              <Button className="mt-5 bg-blue-600 h-12 w-full" size={'lg'}>Book Now</Button>
+              </Link>
             </CardContent>
           </Card>
         </div>
@@ -103,21 +128,21 @@ export default function RoomInfoPage() {
         <h2 className="text-2xl font-bold mb-4">Guest Reviews</h2>
         <ScrollArea className="w-full whitespace-nowrap rounded-md border">
           <div className="flex w-max space-x-4 p-4 overflow-x-auto">
-            {[1, 2, 3, 4, 5].map((review) => (
-              <Card key={review} className="w-[350px] flex-shrink-0">
+            {profiles.map((review, index) => (
+              <Card key={index} className="w-[350px] flex-shrink-0">
                 <CardContent className="p-4">
                   <div className="flex items-center mb-2">
                     <Avatar className="h-10 w-10 mr-2">
-                      <AvatarImage src={`/placeholder.svg`} alt={`Reviewer ${review}`} />
-                      <AvatarFallback>R{review}</AvatarFallback>
+                      <AvatarImage src={review.image} alt={`Reviewer ${review}`} />
+                      <AvatarFallback>G</AvatarFallback>
                     </Avatar>
                     <div>
-                      <h3 className="font-semibold">John Doe</h3>
+                      <h3 className="font-semibold">{review.name}</h3>
                       <div className="text-yellow-400">★★★★★</div>
                     </div>
                   </div>
                   <p className="text-gray-600 text-wrap">
-                    Absolutely stunning room with a breathtaking view! The service was impeccable, and the amenities exceeded our expectations. We'll definitely be coming back for another unforgettable stay!
+                    {review.description}
                   </p>
                 </CardContent>
               </Card>

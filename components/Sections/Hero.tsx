@@ -46,7 +46,7 @@ export default function HeroSection() {
           <div className="hidden lg:block">
             <div className="relative h-full w-full">
               <Image
-                src="/placeholder.svg"
+                src="/image.webp"
                 alt="Happy roommates"
                 width={600}
                 height={600}

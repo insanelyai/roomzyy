@@ -1,6 +1,6 @@
 "use client";
 
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
@@ -28,7 +28,6 @@ import {
 import { Input } from "@/components/ui/input";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import UserContext from "@/providers/UserProvider";
-import axios from "axios";
 
 const navItems = [
   { name: "Find Rooms", href: "/rooms", icon: Home },
@@ -41,31 +40,17 @@ const adminItems = [
   { name: "Manage Properties", href: "/admin/properties", icon: Building },
 ];
 
+const userRole: string = "admin";
+
 export default function Navbar() {
   const userContent = useContext(UserContext);
 
-  useEffect(() => {
-    async function fetch() {
-      try {
-        const response = await axios.get("/api/fetch-user");
-
-        if (response.status === 200) {
-          if (response.data.payload) {
-            userContent?.setUser(response.data.payload);
-          }
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    }
-    fetch();
-  }, []);
-
+  if (!userContent) {
+    return;
+  }
 
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const pathname = usePathname();
-
-  const userRole = userContent?.user?.role; // Get user role dynamically, or undefined if not logged in
 
   return (
     <nav className="bg-white shadow-sm">
@@ -78,127 +63,103 @@ export default function Navbar() {
               </span>
             </Link>
             <div className="hidden sm:ml-6 sm:flex sm:space-x-8">
-              {userContent?.user ? (
-                <>
-                  {navItems.map((item) => (
-                    <Link
-                      key={item.name}
-                      href={item.href}
-                      className={cn(
-                        "inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium",
-                        pathname === item.href
-                          ? "border-primary text-primary"
-                          : "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700"
-                      )}
-                    >
-                      <item.icon className="h-5 w-5 mr-1" />
-                      {item.name}
-                    </Link>
-                  ))}
-                  {userRole === "admin" &&
-                    adminItems.map((item) => (
-                      <Link
-                        key={item.name}
-                        href={item.href}
-                        className={cn(
-                          "inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium",
-                          pathname === item.href
-                            ? "border-primary text-primary"
-                            : "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700"
-                        )}
-                      >
-                        <item.icon className="h-5 w-5 mr-1" />
-                        {item.name}
-                      </Link>
-                    ))}
-                </>
-              ) : (
-                <>
+              {navItems.map((item) => (
+                <Link
+                  key={item.name}
+                  href={item.href}
+                  className={cn(
+                    "inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium",
+                    pathname === item.href
+                      ? "border-primary text-primary"
+                      : "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700"
+                  )}
+                >
+                  <item.icon className="h-5 w-5 mr-1" />
+                  {item.name}
+                </Link>
+              ))}
+              {userRole === "admin" &&
+                adminItems.map((item) => (
                   <Link
-                    href="/login"
-                    className="inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700"
+                    key={item.name}
+                    href={item.href}
+                    className={cn(
+                      "inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium",
+                      pathname === item.href
+                        ? "border-primary text-primary"
+                        : "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700"
+                    )}
                   >
-                    Login
+                    <item.icon className="h-5 w-5 mr-1" />
+                    {item.name}
                   </Link>
-                  <Link
-                    href="/signup"
-                    className="inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700"
-                  >
-                    Sign Up
-                  </Link>
-                </>
-              )}
+                ))}
             </div>
           </div>
-
           <div className="hidden sm:ml-6 sm:flex sm:items-center">
-            {userContent?.user ? (
-              <>
-                <div className="relative">
-                  {isSearchOpen ? (
-                    <Input
-                      type="text"
-                      placeholder="Search..."
-                      className="w-64"
-                      onBlur={() => setIsSearchOpen(false)}
-                      autoFocus
-                    />
-                  ) : (
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      onClick={() => setIsSearchOpen(true)}
-                    >
-                      <Search className="h-5 w-5" />
-                    </Button>
-                  )}
-                </div>
-
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" size="icon" className="ml-3">
-                      <User className="h-5 w-5" />
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end">
-                    <DropdownMenuLabel>
-                      {userRole === "admin" ? "Admin Menu" : "User Menu"}
-                    </DropdownMenuLabel>
+            <div className="relative">
+              {isSearchOpen ? (
+                <Input
+                  type="text"
+                  placeholder="Search..."
+                  className="w-64"
+                  onBlur={() => setIsSearchOpen(false)}
+                  autoFocus
+                />
+              ) : (
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={() => setIsSearchOpen(true)}
+                >
+                  <Search className="h-5 w-5" />
+                </Button>
+              )}
+            </div>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" size="icon" className="ml-3">
+                  <User className="h-5 w-5" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuLabel>
+                  {userRole === "admin" ? "Admin Menu" : "User Menu"}
+                </DropdownMenuLabel>
+                <DropdownMenuGroup>
+                  <Link href={"/profile"}>
+                    <DropdownMenuItem>
+                      <User className="mr-2 h-4 w-4" />
+                      <span>Profile</span>
+                    </DropdownMenuItem>
+                  </Link>
+                  <DropdownMenuItem>
+                    <Settings className="mr-2 h-4 w-4" />
+                    <span>Settings</span>
+                  </DropdownMenuItem>
+                </DropdownMenuGroup>
+                {userRole === "admin" && (
+                  <>
+                    <DropdownMenuSeparator />
                     <DropdownMenuGroup>
                       <DropdownMenuItem>
-                        <User className="mr-2 h-4 w-4" />
-                        <span>Profile</span>
+                        <LayoutDashboard className="mr-2 h-4 w-4" />
+                        <span>Admin Dashboard</span>
                       </DropdownMenuItem>
                       <DropdownMenuItem>
-                        <Settings className="mr-2 h-4 w-4" />
-                        <span>Settings</span>
+                        <Building className="mr-2 h-4 w-4" />
+                        <span>Manage Properties</span>
                       </DropdownMenuItem>
                     </DropdownMenuGroup>
-                    {userRole === "admin" && (
-                      <>
-                        <DropdownMenuSeparator />
-                        <DropdownMenuGroup>
-                          <DropdownMenuItem>
-                            <LayoutDashboard className="mr-2 h-4 w-4" />
-                            <span>Admin Dashboard</span>
-                          </DropdownMenuItem>
-                          <DropdownMenuItem>
-                            <Building className="mr-2 h-4 w-4" />
-                            <span>Manage Properties</span>
-                          </DropdownMenuItem>
-                        </DropdownMenuGroup>
-                      </>
-                    )}
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem>
-                      <span className="text-red-600">Log out</span>
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </>
-            ) : null}
+                  </>
+                )}
+                <DropdownMenuSeparator />
+                <DropdownMenuItem>
+                  <span className="text-red-600">Log out</span>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
-
           <div className="flex items-center sm:hidden">
             <Sheet>
               <SheetTrigger asChild>
@@ -209,60 +170,95 @@ export default function Navbar() {
               </SheetTrigger>
               <SheetContent side="right">
                 <div className="px-2 pt-2 pb-3 space-y-1">
-                  {userContent?.user ? (
-                    <>
-                      {navItems.map((item) => (
-                        <Link
-                          key={item.name}
-                          href={item.href}
-                          className={cn(
-                            "block px-3 py-2 rounded-md text-base font-medium",
-                            pathname === item.href
-                              ? "bg-primary text-white"
-                              : "text-gray-700 hover:bg-gray-50 hover:text-gray-900"
-                          )}
+                  {navItems.map((item) => (
+                    <Link
+                      key={item.name}
+                      href={item.href}
+                      className={cn(
+                        "block px-3 py-2 rounded-md text-base font-medium",
+                        pathname === item.href
+                          ? "bg-primary text-white"
+                          : "text-gray-700 hover:bg-gray-50 hover:text-gray-900"
+                      )}
+                    >
+                      <div className="flex items-center">
+                        <item.icon className="h-5 w-5 mr-2" />
+                        {item.name}
+                      </div>
+                    </Link>
+                  ))}
+                  {userRole === "admin" &&
+                    adminItems.map((item) => (
+                      <Link
+                        key={item.name}
+                        href={item.href}
+                        className={cn(
+                          "block px-3 py-2 rounded-md text-base font-medium",
+                          pathname === item.href
+                            ? "bg-primary text-white"
+                            : "text-gray-700 hover:bg-gray-50 hover:text-gray-900"
+                        )}
+                      >
+                        <div className="flex items-center">
+                          <item.icon className="h-5 w-5 mr-2" />
+                          {item.name}
+                        </div>
+                      </Link>
+                    ))}
+                </div>
+                <div className="pt-4 pb-3 border-t border-gray-200">
+                  <div className="px-2 space-y-1">
+                    <Button
+                      variant="ghost"
+                      className="w-full justify-start"
+                      asChild
+                    >
+                      <Link href="/profile">
+                        <User className="h-5 w-5 mr-2" />
+                        Profile
+                      </Link>
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      className="w-full justify-start"
+                      asChild
+                    >
+                      <Link href="/settings">
+                        <Settings className="h-5 w-5 mr-2" />
+                        Settings
+                      </Link>
+                    </Button>
+                    {userRole === "admin" && (
+                      <>
+                        <Button
+                          variant="ghost"
+                          className="w-full justify-start"
+                          asChild
                         >
-                          <div className="flex items-center">
-                            <item.icon className="h-5 w-5 mr-2" />
-                            {item.name}
-                          </div>
-                        </Link>
-                      ))}
-                      {userRole === "admin" &&
-                        adminItems.map((item) => (
-                          <Link
-                            key={item.name}
-                            href={item.href}
-                            className={cn(
-                              "block px-3 py-2 rounded-md text-base font-medium",
-                              pathname === item.href
-                                ? "bg-primary text-white"
-                                : "text-gray-700 hover:bg-gray-50 hover:text-gray-900"
-                            )}
-                          >
-                            <div className="flex items-center">
-                              <item.icon className="h-5 w-5 mr-2" />
-                              {item.name}
-                            </div>
+                          <Link href="/admin/dashboard">
+                            <LayoutDashboard className="h-5 w-5 mr-2" />
+                            Admin Dashboard
                           </Link>
-                        ))}
-                    </>
-                  ) : (
-                    <>
-                      <Link
-                        href="/login"
-                        className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-50 hover:text-gray-900"
-                      >
-                        Login
-                      </Link>
-                      <Link
-                        href="/signup"
-                        className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-50 hover:text-gray-900"
-                      >
-                        Sign Up
-                      </Link>
-                    </>
-                  )}
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          className="w-full justify-start"
+                          asChild
+                        >
+                          <Link href="/admin/properties">
+                            <Building className="h-5 w-5 mr-2" />
+                            Manage Properties
+                          </Link>
+                        </Button>
+                      </>
+                    )}
+                    <Button
+                      variant="ghost"
+                      className="w-full justify-start text-red-600 hover:text-red-800 hover:bg-red-50"
+                    >
+                      Log out
+                    </Button>
+                  </div>
                 </div>
               </SheetContent>
             </Sheet>
